@@ -48,6 +48,10 @@ doubleAddition = (c, d) => addition(c, d) * 2;
 //    console.log("I am " + i);
 // }
 
+// if-statement syntax
+// if ( condition ) { code to execute }
+
+// The triple equal signs test for equality, meaning that the date in the table has to match our filter exactly.
 function buildTable(data) {
     // First, clear out any existing data
     tbody.html("");
@@ -67,3 +71,30 @@ function buildTable(data) {
       );
     });
 }
+
+function handleClick() {
+    // Grab the datetime value from the filter
+    // By chaining .property("value"), we're telling D3 not only to look for where our date values are stored on the webpage
+    // but to actually grab that information and hold it in the "date" variable.
+    let date = d3.select("#datetime").property("value");
+    let filteredData = tableData;
+  
+    // Check to see if a date was entered and filter the data using that date.
+    if (date) {
+      // Apply `filter` to the table data to only keep the rows where the `datetime` value matches the filter value
+      filteredData = filteredData.filter(row => row.datetime === date);
+    };
+  
+    // Rebuild the table using the filtered data @NOTE: If no date was entered, then filteredData will 
+    // just be the original tableData.
+    // calling function buildTable based on filteredData
+    buildTable(filteredData);
+  };  
+    
+// Attach an event to listen for the form button
+// By adding .on("click", handleClick) we're telling D3 to execute our handleClick() function 
+//when the button with an id of filter-btn is clicked.
+d3.selectAll("#filter-btn").on("click", handleClick);
+
+// Build the table when the page loads
+buildTable(tableData);
